@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Input } from 'reactstrap';
+import { Button, Col, Container, Form, Input, Row } from 'reactstrap';
 
 class SearchIndex extends Component {
   constructor(props) {
@@ -23,18 +23,35 @@ class SearchIndex extends Component {
         'protective sheets',
         'index cards',
       ],
+      searchItem: '',
     };
-    function searchFunction() {
-      const searchItem = this.state.things.find((element) => element === 'pen');
-      console.log(searchItem);
-    }
   }
+  searchFunction = () => {
+    console.log('Button Clicked');
+    const searchItem = this.state.things.find(
+      (element) => element === this.state.searchItem
+    );
+  };
 
   render() {
     return (
       <div>
-        <Input placeholder="Search Here" />
-
+        <Container>
+          <Form onSubmit={this.searchFunction}>
+            <Row xs="2">
+              <Col xs="9">
+                <Input
+                  placeholder="Search Here"
+                  // value={this.state.searchItem}
+                  // onChange={this.searchFunction}
+                />
+              </Col>
+              <Col xs="3">
+                <Input type="submit" value="Submit" />
+              </Col>
+            </Row>
+          </Form>
+        </Container>
         <h3>Results:</h3>
       </div>
     );
