@@ -1,40 +1,55 @@
 import React, { Component } from 'react';
-import { Button, Form, Input } from 'reactstrap';
-
-class ToDoIndex extends Component {
+class ToDoList extends Component {
   constructor(props) {
     super(props);
-    this.state = { toDo: [] };
+    this.state = { inputValue: '', task: [{ task: '', complete: false }] };
   }
-  handleSubmit = (e) => {
-    console.log('Submit was clicked');
-    this.setState({ toDo: [...this.state.toDo] });
+  handleChange = (e) => {
+    this.setState({ inputValue: e.target.value });
   };
-  //   handleChange = (e) => {
-  //     this.setState({ toDo: e.target.value });
-  //   };
-  componentDidMount() {
-    this.handleSubmit();
-  }
-
+  handleClick = () => {
+    const newTask = this.state.task;
+    newTask.push({
+      task: this.state.inputValue,
+      complete: false,
+    });
+    this.setState({
+      task: newTask,
+    });
+  };
+  handleUpdate = (e, arrayBucketNumber) => {
+    let updateTask = this.state.task;
+    updateTask[arrayBucketNumber] = {
+      task: updateTask[arrayBucketNumber].task,
+      complete: e.target.checked,
+    };
+    this.setState({
+      task: updateTask,
+    });
+  };
   render() {
     return (
       <div>
-        <h1>To Do List:</h1>
-        <Form onSubmit={this.handleSubmit}>
-          <Input
-            type="text"
-            value={this.state.toDo}
-            onChange={(e) => this.setState.toDo(e.target.value)}
-          />{' '}
-          <Button type="submit">Submit</Button>
-        </Form>
+        <input onChange={this.handleChange} />
+        <button onClick={this.handleClick}>Add to List</button>
         <ul>
-          <li>{this.state.toDo}</li>
+          {this.state.task.map((item, arrayBucketNumber) => (
+            <li
+              key={arrayBucketNumber}
+              style={{
+                textDecoration: item.complete ? 'line-through' : 'none',
+              }}
+            >
+              <input
+                type="checkbox"
+                onChange={(e) => this.handleUpdate(e, arrayBucketNumber)}
+              />
+              {item.task}
+            </li>
+          ))}
         </ul>
       </div>
     );
   }
 }
-
-export default ToDoIndex;
+export default ToDoList;

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
-import { Button, Col, Container, Form, Input, Row } from 'reactstrap';
-
+import { Input } from 'reactstrap';
 class SearchIndex extends Component {
   constructor(props) {
     super(props);
@@ -23,39 +21,27 @@ class SearchIndex extends Component {
         'protective sheets',
         'index cards',
       ],
-      searchItem: '',
+      search: '',
     };
   }
-  searchFunction = () => {
-    console.log('Button Clicked');
-    const searchItem = this.state.things.find(
-      (element) => element === this.state.searchItem
-    );
-  };
-
+  searchFunction(e) {
+    this.setState({ search: e.target.value });
+  }
   render() {
     return (
       <div>
-        <Container>
-          <Form onSubmit={this.searchFunction}>
-            <Row xs="2">
-              <Col xs="9">
-                <Input
-                  placeholder="Search Here"
-                  // value={this.state.searchItem}
-                  // onChange={this.searchFunction}
-                />
-              </Col>
-              <Col xs="3">
-                <Input type="submit" value="Submit" />
-              </Col>
-            </Row>
-          </Form>
-        </Container>
+        <Input
+          placeholder="Search Here"
+          onChange={(e) => this.searchFunction(e)}
+        />
         <h3>Results:</h3>
+        {this.state.things
+          .filter((thing) => thing.includes(this.state.search))
+          .map((result, index) => (
+            <li key={index}>{result}</li>
+          ))}
       </div>
     );
   }
 }
-
 export default SearchIndex;
